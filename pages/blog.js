@@ -1,27 +1,24 @@
-
 import React from 'react'
 
-const posts = [
-  { slug: 'hello-world', title: 'Hello world' },
-  { slug: 'another-blog-post', title: 'Another blog post' }
-]
-
 export default class extends React.Component {
-  static async getInitialProps ({ query, res }) {
-    const post = posts.find(post => post.slug === query.slug)
-
-    if (!post && res) {
-      res.statusCode = 404
+    static async getInitialProps({query, res}) {
+        const data = await fetch(`https://www.businesscard.vn/blog/wp-json/wp/v2/pages?slug=${query.slug}`)
+        let posts = await data.json()
+        //wp-json return an array, with the first one is exact match
+        let post
+        posts.forEach(function (p) {
+            if (p.slug == query.slug) {
+                post = p
+            }
+        })
+        return {post}
     }
 
-    return { post }
-  }
+    render() {
+        const {post} = this.props
+        if (!post) 
+            return <h1>Post not found</h1>
 
-  render () {
-    const { post } = this.props
-
-    if (!post) return <h1>Post not found</h1>
-
-    return <h1>{post.title}</h1>
-  }
+        return <h1>{post.title.rendered}</h1>
+    }
 }
