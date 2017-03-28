@@ -1,13 +1,23 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import App from '../components/App'
-import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import Subheader from 'material-ui/Subheader';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import 'isomorphic-fetch'
-import { Link, Router } from '../routes'
-const style = {
-    margin: 12
+import {Link, Router} from '../routes'
+import { API_ENDPOINT } from '../configs'
+import he from 'he'
+const styles = {
+    margin: 12,
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around'
+    },
+    gridList: {
+        overflowY: 'auto'
+    }
 };
 export default class Index extends Component {
     constructor(props) {
@@ -17,34 +27,20 @@ export default class Index extends Component {
             open: false
         };
     }
-  static async getInitialProps ({ query, res }) {
-        const data = await fetch(`https://www.businesscard.vn/blog/wp-json/wp/v2/posts`)
+    static async getInitialProps({query, res}) {
+        const data = await fetch(`${API_ENDPOINT}/posts?_embed`)
         let posts = await data.json()
-        return {posts};  
-  }
-
-    componentDidMount() {
-        this.interval = setInterval(this.increment.bind(this), 1000)
-
+        posts.map(function (post) {
+            if (post._embedded && post._embedded["wp:featuredmedia"][0]) {
+                post.image = post._embedded["wp:featuredmedia"][0]["media_details"]["sizes"]["medium"]["source_url"]
+            }
+            post.author = post._embedded.author[0]
+            
+            return post
+        })
+        return {posts};
     }
 
-    increment() {
-        this.setState(({counter}) => {
-            return {
-                counter: counter + 1
-            };
-        });
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval)
-    }
-
-    handleToggle = () => this.setState({
-        open: !this.state.open
-    });
-
-    handleClose = () => this.setState({open: false});
     render() {
         const {counter} = this.state;
 
@@ -52,39 +48,26 @@ export default class Index extends Component {
 
             <App>
                 <div>
-                    <header>
-                        <AppBar title="Title" iconClassNameRight="muidocs-icon-navigation-expand-more" onLeftIconButtonTouchTap={(open) => this.setState({open})}/>
-                        <div>Webpack is doing its thing with React and ES2015</div>
-                        <div
-                            style={{
-                            color: "red"
-                        }}>{counter}</div>
-                    </header>
-                    <RaisedButton label="Default" style={style}/>
-                    <RaisedButton label="Primary" primary={true} style={style}/>
-                    <RaisedButton label="Secondary" secondary={true} style={style}/>
-                    <RaisedButton label="Disabled" disabled={true} style={style}/>
-                    <br/>
-                    <br/>
-                    <RaisedButton label="Full width" fullWidth={true}/>
-                    <RaisedButton label="Open Drawer" onTouchTap={this.handleToggle}/>
-                    <Drawer
-                        docked={false}
-                        width={200}
-                        open={this.state.open}
-                        onRequestChange={(open) => this.setState({open})}>
-                        <MenuItem onTouchTap={this.handleClose}>
-                            Menu Item
-                            </MenuItem>
-                        <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
-                    </Drawer>
-                    {this.props.posts.map(function (post, i) {
-                        return (
-                            <h3> <Link  route='blog' params={{ slug: post.slug}}><a>{post.title.rendered}</a></Link></h3>
-                        )
-                    })}
+                    <div style={styles.root}>
+                        <GridList cols={4} cellHeight={180} style={styles.gridList}>
+                            {this
+                                .props
+                                .posts
+                                .map((post, i) => (
+                                    
+                                        <GridTile
+                                        onClick={() => Router.pushRoute('blog', {slug: post.slug})}
+                                        key={i}
+                                        title={he.decode(post.title.rendered)}
+                                        subtitle={< span > by < b > {post.author.name} < /b></span >}
+                                        actionIcon={< IconButton > <StarBorder color="white"/> < /IconButton>}>
+                                        <img src={post.image}/>
+                                    </GridTile>
+                                ))}
+                        </GridList>
+                    </div>
                 </div>
             </App>
-        );
+        )
     }
 }
