@@ -38,22 +38,25 @@ export default class App extends Component {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
-                <header>
-                    <AppBar
-                            title={APP_NAME}
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
-                        onLeftIconButtonTouchTap={(open) => this.setState({open})}/>
-                </header>
                 <Drawer
-                    docked={false}
-                    width={200}
-                    open={this.state.open}
-                    onRequestChange={(open) => this.setState({open})}>
+                    docked={true}
+                    width={256}
+                    open={true}
+                    >
                     <MenuItem onTouchTap={this.handleLinkClick("/")}> Home
                     </MenuItem>
                     <MenuItem onTouchTap={this.handleClose}>Menu Item 2</MenuItem>
-                </Drawer>
-                {this.props.children}
+                    </Drawer>
+                    <div style={{paddingLeft: 256}}>
+                <header>
+                    <AppBar iconClassNameRight="muidocs-icon-navigation-expand-more" 
+                            style={{ height: 56, position: 'fixed', marginTop: -10 }} showMenuIconButton={false}
+                        />
+                        </header>
+                </div>        
+                <div style={{paddingLeft: 256, paddingTop: 56}}>
+                        {this.props.children}
+                </div>        
                 </div>    
             </MuiThemeProvider>
         );

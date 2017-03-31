@@ -49,13 +49,14 @@ export default class Index extends Component {
             <App>
                 <div>
                     <div style={styles.root}>
-                        <GridList cols={4} cellHeight={180} style={styles.gridList}>
+                        <GridList cols={2} cellHeight={180} style={styles.gridList}>
                             {this
                                 .props
                                 .posts
                                 .map((post, i) => (
                                     
-                                        <GridTile
+                                    <GridTile
+                                        style={{cursor: 'pointer'}}
                                         onClick={() => Router.pushRoute('blog', {slug: post.slug})}
                                         key={i}
                                         title={he.decode(post.title.rendered)}

@@ -14,7 +14,15 @@ export default class extends React.Component {
         const {post} = this.props
         if (!post) 
             return <h1>Post not found</h1>
-        
-        return <App><h1>{he.decode(post.title.rendered)}</h1></App>
+
+        return (
+            <App>
+                <h1>{he.decode(post.title.rendered)}</h1>
+                <div>
+                    {
+                        he.escape(post.content.rendered)}
+                </div>
+            </App>
+        )
     }
 }
