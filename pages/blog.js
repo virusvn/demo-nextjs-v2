@@ -18,9 +18,7 @@ export default class extends React.Component {
         return (
             <App>
                 <h1>{he.decode(post.title.rendered)}</h1>
-                <div>
-                    {
-                        he.escape(post.content.rendered)}
+                <div dangerouslySetInnerHTML={{__html: post.content.rendered}}>
                 </div>
             </App>
         )

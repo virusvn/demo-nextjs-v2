@@ -1,13 +1,33 @@
 import React, {Component} from "react";
 import App from '../components/App'
-import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
-import Subheader from 'material-ui/Subheader';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import 'isomorphic-fetch'
 import {Link, Router} from '../routes'
 import { API_ENDPOINT } from '../configs'
+
+import Divider from 'material-ui/Divider';
+
+import { createStyleSheet } from 'jss-theme-reactor';
+import customPropTypes from 'material-ui/utils/customPropTypes';
+import Layout from 'material-ui/Layout';
+import { LabelRadio, RadioGroup } from 'material-ui/Radio';
+import Paper from 'material-ui/Paper';
+import { FormLabel } from 'material-ui/Form';
+
 import he from 'he'
+
+const styleSheet = createStyleSheet('FullWidthLayout', (theme) => ({
+  root: {
+    flexGrow: 1,
+    marginTop: 30,
+  },
+  paper: {
+    padding: 16,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
+
 const styles = {
     margin: 12,
     root: {
@@ -49,23 +69,22 @@ export default class Index extends Component {
             <App>
                 <div>
                     <div style={styles.root}>
-                        <GridList cols={2} cellHeight={180} style={styles.gridList}>
-                            {this
-                                .props
-                                .posts
-                                .map((post, i) => (
-                                    
-                                    <GridTile
-                                        style={{cursor: 'pointer'}}
-                                        onClick={() => Router.pushRoute('blog', {slug: post.slug})}
-                                        key={i}
-                                        title={he.decode(post.title.rendered)}
-                                        subtitle={< span > by < b > {post.author.name} < /b></span >}
-                                        actionIcon={< IconButton > <StarBorder color="white"/> < /IconButton>}>
-                                        <img src={post.image}/>
-                                    </GridTile>
-                                ))}
-                        </GridList>
+                         <Layout type="item" 
+          xs={6}
+          xsJustify="center"
+          xsAlign="center"
+                        >
+             <Paper>
+            xs=12
+          </Paper>
+          <Paper>
+            xs=12
+          </Paper>
+          <Paper>
+            xs=12
+          </Paper>
+
+                        </Layout>
                     </div>
                 </div>
             </App>

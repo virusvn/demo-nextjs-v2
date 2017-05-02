@@ -13,8 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "he": "^1.1.1",
-    "material-ui": "^0.17.1",
-    "next": "^2.0.0-beta",
+    "material-ui": "^1.0.0-alpha.9",
+    "next": "^2.0.0",
     "next-routes": "^1.0.17",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

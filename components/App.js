@@ -1,20 +1,13 @@
 import React, {Component} from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+
+import { Menu, MenuItem } from 'material-ui/Menu';
 import '../components/tap_events'
 import { Link, Router } from '../routes'
 import {APP_NAME} from '../configs'
-
-const muiTheme = getMuiTheme({
-    userAgent: false,
-    appBar: {
-        height: 56,
-    },
-});
+import Head from 'next/head'
 
 export default class App extends Component {
     constructor(props) {
@@ -36,8 +29,11 @@ export default class App extends Component {
     }
     render() {
         return (
-            <MuiThemeProvider muiTheme={muiTheme}>
+            <MuiThemeProvider>
                 <div>
+                 <Head>
+                    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500&selection.subset=vietnamese' />
+                </Head>
                 <Drawer
                     docked={true}
                     width={256}
